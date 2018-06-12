@@ -1,0 +1,26 @@
+﻿@model IEnumerable<ShopQuanAoLite.Models.Hang>
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="~/Assets/Client/slick-carousel/css/normalize.min.css" rel="stylesheet">
+    <link href="~/Assets/Client/slick-carousel/css/slick-theme.min.css" rel="stylesheet">
+    <link href="~/Assets/Client/slick-carousel/css/slick.min.css" rel="stylesheet">
+    <link href="~/Assets/Client/slick-carousel/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+        <h5>Danh Mục</h5>    
+        <div class="carousel">
+                @foreach (var item in Model)
+                {
+                    <a href="/Product/ListProductByCategory/@item.MaH" ><img src="/@item.AnhBia" alt="destination"></a>
+                }
+    </div>
+    <script src="~/Assets/Client/slick-carousel/js/jquery.min.js"></script>
+</body>
+</html>

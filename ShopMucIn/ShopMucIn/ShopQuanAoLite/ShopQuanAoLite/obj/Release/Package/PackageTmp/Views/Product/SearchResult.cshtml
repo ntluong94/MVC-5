@@ -1,0 +1,71 @@
+﻿@model List <ShopQuanAoLite.Models.SanPham>
+@{
+    ViewBag.Title = "SearchResult";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@helper Truncate(string input, int length)
+{
+if (input.Length < length)
+
+{
+        @input
+}
+else
+{
+        @input.Substring(0, length)<text>...</text>
+}
+}
+@section Menu_Category
+    {
+        @{
+        Html.RenderAction("Menu_Category", "Product");
+        }
+    }
+    <div class="row">
+    <h3 style="margin-left: 20px">Kết quả tìm kiếm cho từ khóa: <i style="color:red">@ViewBag.KeyWord</i></h3>
+    @foreach (var sanpham in Model)
+    {
+        var gb = sanpham.GiaBan;
+        string giaban = $"{gb:N}";
+        var gkm = sanpham.GiaKhuyenMai;
+        string giakhuyenmai = $"{gkm:N}";
+        <div class="col-md-4 col-sm-6">
+            <div class="product">
+                <div class="flip-container">
+                    <div class="flipper">
+                        <div class="reveal">
+                            <img src="/@sanpham.AnhBia" alt="" class="img-responsive-product">
+                            <div class="hidden">
+                                <div class="caption">
+                                    <div class="centered">
+                                        <a href="/Product/Details/@sanpham.MaSP">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="/Product/Details/@sanpham.MaSP">
+                    <img src="/@sanpham.AnhBia" alt="" class="img-responsive-product">
+                </a>
+                <div class="text">
+                    <h3><a href="/Product/Details/@sanpham.MaSP">@Truncate(@sanpham.TenSP, 20)</a></h3>
+                    @if (sanpham.GiaKhuyenMai != null)
+                    {
+                        var saleprice = (int)sanpham.GiaKhuyenMai;
+                        <a class="price" style="font-size: 15px;"><span style="text-decoration: line-through">@giaban ₫</span></a>
+                            <a class="price" style="font-size: 15px;">@saleprice.ToString("0,0") ₫</a>
+                    }
+                    else
+                    {
+                        <a class="price" style="font-size: 15px;">@giaban ₫</a>
+                    }
+
+                </div>
+            </div>
+        </div>
+
+    }
+    <!--Phân trang-->
+
+</div>

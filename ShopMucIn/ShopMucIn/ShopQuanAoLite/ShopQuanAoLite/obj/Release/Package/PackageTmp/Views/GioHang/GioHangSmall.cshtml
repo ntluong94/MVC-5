@@ -1,0 +1,150 @@
+﻿@using ShopQuanAoLite.ViewModels
+@model List<GioHangdViewModel>
+@helper Truncate(string input, int length)
+{
+if (input.Length < length)
+
+{
+        @input
+}
+else
+{
+        @input.Substring(0, length)<text>...</text>
+}
+}
+ 
+<!-- Trigger the modal with a button -->
+<a class="btn btn-default navbar-toggle" data-toggle="modal" data-target="#myModal">
+    <i class="fa fa-shopping-cart"></i>  <span class="hidden-xs">3 items in cart</span>
+</a>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">THÔNG TIN GIỎ HÀNG</h4>
+            </div>
+            <div class="modal-body">
+                <div id="basket">
+                    <div class="box">
+                        @{
+                            var sum = 0;
+                            <div class="table-responsive">
+                                <div class="scrollmenu">
+                                    @if (Model.Count > 0)
+                                    {
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Hình ảnh</th>
+                                                    <th>Thông tin</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model)
+                                                {
+                                                    if (@item.GiaKhuyenMai != null)
+                                                    {
+
+
+                                                        var s = (int)@item.GiaKhuyenMai * @item.SoLuong;
+                                                        <tr>
+                                                            <th rowspan="3"><img width="100" src="/@item.AnhBia" /></th>
+                                                            <td>@Truncate(@item.TenSP, 20)</td>
+                                                        </tr>
+                                                        using (Html.BeginForm("CapnhatGiohang", "Giohang", new { @MaSP = item.MaSP }))
+                                                        {
+                                                            <tr>
+                                                                <td>@String.Format("{0:0,0}", @item.GiaKhuyenMai) </td>
+                                                                <td>
+                                                                    <input type="number" min="1" name="txtSoluong" value="@item.SoLuong" style="width: 50px;background-color:rgb(248, 253, 199);" />
+                                                                </td>
+                                                            </tr>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <a href="@Url.Action("Details", "Product", new { id = item.MaSP })"> Chi tiết </a>
+                                                                                    <a> @Html.ActionLink("Xóa", "XoaGiohang", new { @MaSP = item.MaSP })</a>
+                                                                                </td>
+                                                                                <td> <input type="submit" value="Cập Nhật" /></td>
+                                                                            </tr>
+                                                        }
+
+                                                        sum += @s;
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <tr>
+                                                            <td rowspan="3"><img width="100" src="/@item.AnhBia" /></td>
+                                                            <td> @Truncate(@item.TenSP, 20)</td>
+                                                        </tr>
+                                                        using (Html.BeginForm("CapnhatGiohang", "Giohang", new { @MaSP = item.MaSP }))
+                                                        {
+                                                            <tr>
+                                                                <td>@String.Format("{0:0,0}", item.DonGia) </td>
+                                                                <td>
+                                                                    <input type="number" min="1" name="txtSoluong" value="@item.SoLuong" style="width: 50px;background-color:rgb(248, 253, 199);" />
+                                                                </td>
+                                                            </tr>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <a href="@Url.Action("Details", "Product", new { id = item.MaSP })"> Chi tiết </a>
+                                                                                    <a> @Html.ActionLink("Xóa", "XoaGiohang", new { @MaSP = item.MaSP })</a>
+                                                                                </td>
+                                                                                <td> <input type="submit" value="Cập Nhật" /></td>
+                                                                            </tr>
+                                                        }
+
+                                                        sum += (int)@item.ThanhTien;
+                                                    }
+                                                }
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="2"> Số lượng sản phẩm: @ViewBag.Tongsoluong </td>
+                                                    <td colspan="2" style="color:red"> Tổng tiền: @String.Format("{0:0,0}", @sum) ₫ </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <span class="alert alert-danger">Chưa có sản phẩm nào trong giỏ hàng</span>
+                                    }
+                                </div>
+                            </div>
+                                        <div class="box-footer">
+                                            <div class="pull-right">
+                                                <a href="/GioHang/XoaTatcaGiohang" style="background: #7b7b7b; color: #fff;" class="btn">Hủy đơn hàng </a>
+                                                @if (Session["Taikhoan"] == null || Session["Taikhoan"].ToString() == "")
+                                                {
+
+                                                    <a href="#" data-toggle="modal" data-target="#login-modal" data-dismiss="modal" style="background: #428bca; color: #fff;" class="btn">Đặt hàng <i class="fa fa-chevron-right"></i></a>
+
+                                                }
+                                                else
+                                                {
+
+                                                    <a href="/GioHang/DatHang" style="background: #428bca; color: #fff;" class="btn">Đặt hàng <i class="fa fa-chevron-right"></i></a>
+
+                                                }
+                                            </div>
+                                        </div>
+
+                        }
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>

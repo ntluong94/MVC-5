@@ -1,0 +1,155 @@
+﻿@model DetailedViewModel
+
+    @{
+        ViewBag.Title = "Details";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+@section Menu_Category
+{
+    @{
+        Html.RenderAction("Menu_Category", "Product");
+    }
+}
+@section Same_product
+{
+    @{
+        Html.RenderAction("Same_product", "Product", new { id = Model.SanPham.MaH });
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="~/Assets/Client/slick-carousel/css/normalize.min.css" rel="stylesheet">
+    <link href="~/Assets/Client/slick-carousel/css/slick-theme.min.css" rel="stylesheet">
+    <link href="~/Assets/Client/slick-carousel/css/slick.min.css" rel="stylesheet">
+    <link href="~/Assets/Client/slick-carousel/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="product-details">
+        <!--product-details-->
+        <div class="col-sm-12">
+            <h4>CHI TIẾT SẢN PHẨM</h4>
+        </div>
+        <div class="col-sm-12">
+            <div class="carousel-details">
+                <img href="/@Model.SanPham.AnhBia" src="/@Model.SanPham.AnhBia" alt="">
+                @foreach (var hinhanh in Model.HinhAnh)
+                {
+
+                        <img href="/@hinhanh.TenHinhAnh" src="/@hinhanh.TenHinhAnh" alt="">
+                }
+            </div>
+            </div>
+            <div class="col-sm-12">
+                <!--/product-information-->
+                <div class="box">
+                    <h1 class="text-center">@Model.SanPham.TenSP</h1>
+                    @{
+                        var gb = Model.SanPham.GiaBan;
+                        string giaban = $"{gb:N}";
+                        var gkm = Model.SanPham.GiaKhuyenMai;
+                        string giakhuyenmai = $"{gkm:N}";
+                        if (@Model.SanPham.GiaKhuyenMai != null)
+                        {
+                            var saleprice = (int)@Model.SanPham.GiaKhuyenMai;
+                            <p class="price">Giá tiền: <span style="text-decoration: line-through">@giaban</span> ₫</p>
+                            <p class="price" style="font-size: x-large;">Giá tiền: @saleprice.ToString("0,0") ₫</p>
+                        }
+                        else
+                        {
+                            <p class="price" style="font-size: x-large;">Giá tiền: @giaban ₫</p>
+                        }
+                    }
+                    <table>
+                        <tr><td></td><td></td></tr>
+                    </table>
+
+                        <div id="Datmua" style="margin-top:20px;" class="text-center buttons" data-animate-hover="shake">
+                            <a href="@Url.Action("ThemGiohang", "GioHang", new {@MaSP=Model.SanPham.MaSP, @strURL=Request.Url.ToString()})" class="btn btn-primary cart">
+                                <i class="fa fa-shopping-cart"></i>
+                                Thêm vào giỏ hàng
+                            </a>
+                        </div>
+                    </div>
+                <!--/product-information-->
+            </div>
+            <div>
+                <h4>Thông tin</h4>
+                <h5>@Html.DisplayTextFor(x => x.SanPham.ThongTin)</h5>
+                <blockquote style="margin-top: 20px;">
+                    <p>Mọi thắc mắc về sản phẩm xin liên hệ: </p>
+                    <p>Hotline: 0975645410</p>
+                    <p>Giờ làm việc: 8h - 21h thứ 2 đến thứ 6; 8h - 17h thứ 7, chủ nhật</p>
+                </blockquote>
+            </div>
+            <h4>Bình luận</h4>
+            @foreach (var cmt in Model.BinhLuan.ToList())
+            {
+               
+                if (cmt.TrangThai == true)
+                {
+
+                    <div id="comments" data-animate="fadeInUp">
+                        <div class="row comment">
+                            <div class="col-sm-3 col-md-2 text-center-xs">
+                                <p>
+                                    <img src="~/Assets/Client/img/icon-profile.jpg" class="img-responsive img-circle">
+                                </p>
+                            </div>
+                            <div class="col-sm-9 col-md-10">
+                                <h5>@cmt.KhachHang.HoTen</h5>
+                                <p class="posted"><i class="fa fa-clock-o"></i> Ngày gửi: @cmt.NgayBL</p>
+                                <p>@cmt.NoiDung</p>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            }
+
+            <div id="comment-form" data-animate="fadeInUp">
+                <h4>Để lại bình luận</h4>
+                @using (Html.BeginForm("Create", "BinhLuans", FormMethod.Post))
+            {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    <input type="hidden" name="MaSP" value="@Model.SanPham.MaSP" />
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="comment">
+                                    Bình luận <span class="required">*</span>
+                                </label>
+                                <textarea class="form-control" id="NoiDung" name="NoiDung" rows="4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    if (Session["Taikhoan"] == null || Session["Taikhoan"].ToString() == "")
+                    {
+                        <div class="row">
+                            <div class="col-sm-12 text-right">
+                                <a href="#" data-toggle="modal" data-target="#login-modal" class="btn btn-primary-comment"><i class="fa fa-comment-o"></i>Gửi bình luận</a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-sm-12 text-right">
+                                <button type="submit" class="btn btn-primary-comment"><i class="fa fa-comment-o"></i> Gửi bình luận</button>
+                            </div>
+                        </div>
+                    }
+
+                }
+            </div>
+
+
+        </div>
+        <script src="~/Assets/Client/slick-carousel/js/jquery.min.js"></script>
+</body>
+</html>
+
+

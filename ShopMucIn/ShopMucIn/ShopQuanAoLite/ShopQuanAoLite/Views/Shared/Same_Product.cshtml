@@ -1,0 +1,60 @@
+﻿@model List<ShopQuanAoLite.Models.SanPham>
+
+<div id="hot">
+        <div class="box-sameproduct">
+                    <h2>Sản phẩm tương tự</h2>
+            </div>
+        </div>
+        <div class="container">
+            <div class="product-slider">
+                @foreach (var item in Model)
+                {
+                    var gb = item.GiaBan;
+                    string giaban = $"{gb:N}";
+                    var gkm = item.GiaKhuyenMai;
+                    string giakhuyenmai = $"{gkm:N}";
+                    <div class="item" style="height:330px;padding: 10px;">
+                        <div class="product">
+                            <div class="flip-container">
+                                <div class="flipper">
+                                    <div class="reveal">
+                                        <img src="/@item.AnhBia" alt="" class="img-responsive-product">
+                                        <div class="hidden">
+                                            <div class="caption">
+                                                <div class="centered">
+                                                    <a href="/Product/Details/@item.MaSP">Xem chi tiết</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#" class="invisible">
+                                <img src="/@item.AnhBia" alt="" class="img-responsive">
+                            </a>
+                            <div class="text">
+                                <h3><a href="/Product/Details/@item.MaSP">@item.TenSP</a></h3>
+                                @if (item.GiaKhuyenMai != null)
+                                {
+                                    var saleprice = (int)item.GiaKhuyenMai;
+                                    <a class="price" style="font-size: 15px;"><span style="text-decoration: line-through">@giaban ₫</span></a>
+                                    <a class="price" style="font-size: 15px;">@saleprice.ToString("0,0") ₫</a>
+                                }
+                                else
+                                {
+                                    <a class="price" style="font-size: 15px;">@giaban ₫</a>
+                                }
+                            </div>
+                            <!-- /.text -->
+                            <div class="ribbon new">
+                                <div class="theribbon">@item.Hang.TenH</div>
+                            <div class="ribbon-background"></div>
+                        </div>
+                    </div><!-- /.product -->
+                </div>
+                }
+            </div>
+            <!-- /.product-slider -->
+        </div>
+        <!-- /.container -->
+    </div>

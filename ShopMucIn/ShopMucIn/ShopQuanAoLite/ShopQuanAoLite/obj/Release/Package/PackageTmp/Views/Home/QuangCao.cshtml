@@ -1,0 +1,58 @@
+﻿@model IEnumerable<ShopQuanAoLite.Models.QuangCao>
+
+@{
+    Layout = null;
+}
+
+    <section id="slider">
+        <!--slider-->
+        <div class="container">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="slider-carousel" class="carousel slide" data-ride="carousel">
+
+                        <ol class="carousel-indicators">
+                           @for (int i = 0; i <= Model.Count(); i++)
+                           {
+                               if (i == 0)
+                               {
+                                    <li data-target="#slider-carousel" data-slide-to="i" class="active"></li>
+                               }
+                               if (i> 0)
+                               {
+                                <li data-target="#slider-carousel" data-slide-to="i"></li>
+                                }
+                            }
+                        </ol>                   
+                        <div class="carousel-inner">
+                            <div class="item active" style="padding-left: 0px; ">
+                                <div class="col-sm-12">
+                                    <img src="~/images/quangcao/qcmacdinh.jpg" class="girl img-responsive" alt="" data-slide="0" />
+                                </div>
+                            </div>
+                                  @foreach (var item in Model)
+                                  {
+
+                                             <div class="item" style="padding-left: 0px; ">
+                                            <div class="col-sm-12">
+                                                <img src="@item.HinhAnhQC" class="girl img-responsive" alt=""/>
+                                            </div>
+                                             </div>
+
+                                  }
+
+
+                        </div>
+                        <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                        <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+

@@ -1,0 +1,96 @@
+﻿@using ShopQuanAoLite.Models
+@using PagedList.Mvc;
+@model PagedList.PagedList<SanPham>
+@helper Truncate(string input, int length)
+{
+if (input.Length < length)
+
+{
+        @input
+}
+else
+{
+        @input.Substring(0, length)<text>...</text>
+}
+}
+@{
+    ViewBag.Title = "ListProductInCollection";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Slider
+{
+    @{
+        Html.RenderAction("Slider", "Home");
+    }
+}
+@section Menu_Category
+{
+    @{
+        Html.RenderAction("Menu_Category", "Product");
+    }
+}
+<div class="row">
+    <div id="hot">
+        <div class="box-sameproduct">
+            <h2>SẢN PHẨM THEO DANH MỤC</h2>
+        </div>
+    </div>
+@if (Model.Count > 0)
+{
+    foreach (var sanpham in Model)
+    {
+        var gb = sanpham.GiaBan;
+        string giaban = $"{gb:N}";
+        var gkm = sanpham.GiaKhuyenMai;
+        string giakhuyenmai = $"{gkm:N}";
+        <div class="col-md-4 col-sm-6">
+            <div class="product">
+                <div class="flip-container">
+                    <div class="flipper">
+                        <div class="reveal">
+                            <img src="/@sanpham.AnhBia" width="450px" alt="" class="img-responsive-product">
+                            <div class="hidden">
+                                <div class="caption">
+                                    <div class="centered">
+                                        <a href="/Product/Details/@sanpham.MaSP">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="/Product/Details/@sanpham.MaSP">
+                    <img src="/@sanpham.AnhBia"  alt="" class="img-responsive-product">
+                </a>
+                <div class="text">
+                    <h3><a href="/Product/Details/@sanpham.MaSP">@Truncate(@sanpham.TenSP, 20)</a></h3>
+                    @if (sanpham.GiaKhuyenMai != null)
+                    {
+                        var saleprice = (int)sanpham.GiaKhuyenMai;
+                        <a class="price" style="font-size: 15px;"><span style="text-decoration: line-through">@giaban ₫</span></a>
+                            <a class="price" style="font-size: 15px;">@saleprice.ToString("0,0") ₫</a>
+                    }
+                    else
+                    {
+                        <a class="price" style="font-size: 15px;">@giaban ₫</a>
+                    }
+                </div>
+            </div>
+        </div>
+        }
+}
+else
+{
+    <span class="alert alert-danger">Chưa có sản phẩm nào</span>
+}
+</div>
+<div class="pages" style="clear:both">
+    <div class="=MenuTrang">
+        @Html.PagedListPager(Model, page => Url.Action("Index", "Home", new { page = page }))
+    </div>
+    <style>
+        .MenuTrang li {
+            display: inline;
+        }
+    </style>
+</div>

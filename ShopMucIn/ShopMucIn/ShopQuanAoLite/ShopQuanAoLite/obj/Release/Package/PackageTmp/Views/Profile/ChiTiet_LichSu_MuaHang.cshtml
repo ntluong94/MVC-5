@@ -1,0 +1,78 @@
+﻿@model List<ShopQuanAoLite.Models.ChiTietHoaDon>
+
+@{
+    ViewBag.Title = "ChiTiet_LichSu_MuaHang";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Menu_Profile
+{
+<div class="panel panel-default sidebar-menu">
+
+    <div class="panel-heading">
+        <h3 class="panel-title">Tài khoản</h3>
+    </div>
+
+    <div class="panel-body">
+        <ul class="nav nav-pills nav-stacked category-menu">
+            <li>
+                <a href="/Profile">Thay đổi Thông tin</a>
+
+            </li>
+            <li>
+                <a href="/Profile/LichSu_MuaHang">Lịch sử mua hàng</a>
+            </li>
+
+        </ul>
+
+    </div>
+</div>
+}
+
+
+<div class="row-fluid sortable">
+    <div class="box span12">
+        <div class="box-header" data-original-title>
+            <h2>Chi Tiết đơn hàng</h2>
+        </div>
+        <h2 style="color:red">Mã đơn hàng: @ViewBag.ID</h2>
+        <div class="scrollmenu">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Hình ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Đơn giá</th>
+                        <th>Số lượng</td>
+                        <th>Tổng tiền</th>
+                    </tr>
+                </thead>
+                @{
+                    int? sum = 0;
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            var s = @item.DonGia * @item.SoLuong;
+                            var d = @item.DonGia;
+                            string dongiafm = $"{d:N}";
+                            string tongtien = $"{s:N}";
+                            <tr>
+                                <td><img src="/@item.SanPham.AnhBia" width="150px" /></td>
+                                <td>@item.SanPham.TenSP</td>
+                                <td>@dongiafm ₫</td>
+                                <td>@item.SoLuong</td>
+                                <td>@tongtien ₫</td>
+                            </tr>
+                            sum += (item.DonGia * item.SoLuong);
+                        }
+                    </tbody>
+                    string formatted = $"{sum:N}";
+                    <tfoot>
+                        <tr>
+                            <td colspan="5"><h3 style="color:red; float:right;">Tổng giá trị đơn hàng:@formatted ₫</h3></td>
+                        </tr>
+                    </tfoot>
+                }
+            </table>
+        </div>
+        </div><!--/span-->
+</div>

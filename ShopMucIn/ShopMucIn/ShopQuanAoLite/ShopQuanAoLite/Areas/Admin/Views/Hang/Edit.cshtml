@@ -1,0 +1,40 @@
+﻿@model ShopQuanAoLite.Areas.Admin.Models.HangViewModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm("Edit", "Hang", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label" for="typeahead">Tên hãng</label>
+                <div class="controls">
+                    @Html.EditorFor(model => model.TenH, new { @class = "span6 typeahead" })
+                    @Html.ValidationMessageFor(model => model.TenH)
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Ảnh phụ</label>
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.files, "", new { @type = "file"})
+                    </div>
+                </div>
+                <p style="color:red;padding-left: 180px;">@ViewBag.ThongBao</p>
+            </div>
+            <div class="form-actions">
+                <a style="background-color:#702222; text-decoration: none; color: #fff" class="btn" href="@Url.Action("Index", "Hang")">Back to list</a>
+                <button type="submit" class="btn btn-primary" name="btnSubmit">Submit</button>
+                <button type="reset" class="btn">Reset</button>
+            </div>
+        </fieldset>
+    </div>
+}
+        </div>
+    </div><!--/span-->
+</div><!--/row-->
